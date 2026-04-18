@@ -27,18 +27,35 @@ def plan_city(municipio: str, uf: str, sample_size: int = 50) -> dict:
     takeup = ref_data.load_takeup()
     sample = build_sample_for_city(takeup, municipio=municipio, uf=uf, sample_size=sample_size)
     queries = general_queries(CityTarget(municipio=municipio, uf=uf))
+    
+    # Agrupar CPFs em listas de 5
+    cpfs = sample.cpfs_masked
+    cpf_groups = [cpfs[i:i+5] for i in range(0, len(cpfs), 5)]
+    cpf_queries = []
+    for group in cpf_groups:
+        group_str = " OR ".join(f'"{c}"' for c in group)
+        cpf_queries.append(f'({group_str}) "minha casa minha vida"')
+        cpf_queries.append(f'({group_str}) site:gov.br')
+
     return {
         "municipio": municipio,
         "uf": uf,
         "universo_cidade_tamanho": sample.universo_cidade_tamanho,
         "amostra_tamanho": len(sample.cpfs_masked),
         "general_queries": queries,
+        "cpf_grouped_queries": cpf_queries,
         "reverse_identifiers": {
             "n_cpfs_masked": len(sample.cpfs_masked),
             "n_cpfs_unmasked": len(sample.cpfs_unmasked),
             "n_nis": len(sample.nis_values),
             "n_nomes": len(sample.nomes),
         },
+        "sample": {
+            "cpfs_masked": sample.cpfs_masked,
+            "cpfs_unmasked": sample.cpfs_unmasked,
+            "nis_values": sample.nis_values,
+            "nomes": sample.nomes,
+        }
     }
 
 

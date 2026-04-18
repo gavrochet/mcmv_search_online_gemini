@@ -1,50 +1,26 @@
-# ---- Dados e conteúdo (nunca commitar) ----
+# MCMV Search Online - Gemini Agent
+
+# Ignore data folders
 reference_data/
-data_train/
 downloads/
 tmp/
+data_train/
+data_train_summary.json
 
-# Catálogo e logs (podem conter referências a PII e são grandes)
+# Ignore catalog data (JSONL)
 catalog/*.jsonl
 catalog/*.json
-# mas preservar relatórios markdown revisados pelo pesquisador
-!catalog/catalog_report.md
-!catalog/coverage_gaps.md
 
-# ---- Python ----
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-dist/
-*.egg-info/
-.venv/
-venv/
-env/
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
+# Keep catalog documentation
+!catalog/*.md
 
-# ---- Jupyter ----
-.ipynb_checkpoints/
-*.ipynb
-
-# ---- IDE / editor ----
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# ---- OS ----
-.DS_Store
-Thumbs.db
-desktop.ini
-
-# ---- Secrets ----
+# Ignore system files
+.gemini/
 .env
-.env.*
-!.env.example
-*.key
-credentials.json
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.vscode/
+
+# ALL FILES ARE TRACKED BY DEFAULT
+# Only specify what to ignore above.

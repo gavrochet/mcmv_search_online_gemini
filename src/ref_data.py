@@ -35,7 +35,7 @@ def load_dados_abertos() -> pd.DataFrame:
 @lru_cache(maxsize=1)
 def load_takeup() -> pd.DataFrame:
     """Contratos assinados até dez/2017 — Nome, NIS, CPF, Cidade, Empreendimento."""
-    df = pd.read_excel(config.REFERENCE_TAKEUP)
+    df = pd.read_excel(config.REFERENCE_TAKEUP, header=1)
     df.columns = [c.strip() for c in df.columns]
     return df
 
@@ -43,7 +43,7 @@ def load_takeup() -> pd.DataFrame:
 def cities_in_takeup() -> pd.DataFrame:
     """Cidades em takeup, ordenadas por contagem de contratos (desc)."""
     df = load_takeup()
-    city_col = _first_matching_column(df, ["Cidade", "Município", "Municipio"])
+    city_col = _first_matching_column(df, ["Cidade", "Município", "Municipio", "Nome_Municipio"])
     uf_col = _first_matching_column(df, ["UF", "Estado", "Sigla_UF"], required=False)
     group_cols = [city_col] + ([uf_col] if uf_col else [])
     counts = df.groupby(group_cols).size().reset_index(name="n_contratos")

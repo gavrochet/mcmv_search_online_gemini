@@ -36,7 +36,7 @@ def build_sample_for_city(
     sample_size: int = config.REVERSE_SEARCH_SAMPLE_MIN,
     seed: int = 42,
 ) -> ReverseSample:
-    city_col = _first_col(takeup, ["Cidade", "Município", "Municipio"])
+    city_col = _first_col(takeup, ["Cidade", "Município", "Municipio", "Nome_Municipio"])
     uf_col = _first_col(takeup, ["UF", "Estado", "Sigla_UF"], required=False)
     mask = takeup[city_col].astype(str).str.strip().str.upper() == municipio.upper()
     if uf and uf_col:
@@ -49,9 +49,9 @@ def build_sample_for_city(
     n = min(sample_size, universo)
     sample = df.sample(n=n, random_state=seed)
 
-    cpf_col = _first_col(sample, ["CPF", "Cpf"], required=False)
-    nis_col = _first_col(sample, ["NIS", "Nis", "PIS"], required=False)
-    nome_col = _first_col(sample, ["Nome", "Nome_Completo", "Nome Completo"], required=False)
+    cpf_col = _first_col(sample, ["CPF", "Cpf", "Numero_CPF_Mutuario"], required=False)
+    nis_col = _first_col(sample, ["NIS", "Nis", "PIS", "Numero_PIS_do_Mutuario"], required=False)
+    nome_col = _first_col(sample, ["Nome", "Nome_Completo", "Nome Completo", "Nome_do_Mutuario"], required=False)
 
     cpfs_masked: list[str] = []
     cpfs_unmasked: list[str] = []
